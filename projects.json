@@ -1,0 +1,13 @@
+[
+ {
+
+        "title": "Personal Portfolio Website",
+        "description": "The website you are viewing: a responsive portfolio that loads its projects from JSON and my latest repositories from the GitHub API.",
+        "technologies": ["HTML", "CSS", "JavaScript"],
+        "role": "Designer and developer (solo project)",
+        "screenshot": "portfolio.svg",
+        "link": "https://github.com/JL18-07/JL18-07.github.io",
+        "linkLabel": "view in GitHub
+  },
+
+]
