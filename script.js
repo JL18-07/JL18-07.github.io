@@ -3,7 +3,7 @@
 
   
   var GITHUB_USERNAME = "JL18-07";
-  var PROJECTS_URL = "data/projects.json";
+  var PROJECTS_URL = "projects.json";
   var REPOS_URL =
     "https://api.github.com/users/" + GITHUB_USERNAME +
     "/repos?sort=updated&per_page=5";
