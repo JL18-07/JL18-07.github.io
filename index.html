@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JL | Student Portfolio</title>
+  <meta name="description" content="Personal portfolio of a student applying for internships: skills, projects and contact details.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232F45E0'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23F2B134'%3EJL%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#home" class="nav__brand">JL</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">Menu</button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-btn" id="themeToggle" aria-label="Switch to dark theme">Dark</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="section hero">
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <p class="hero__hello">Hello, I'm</p>
+          <h1>Judel Omas</h1>
+          <p class="hero__tagline" id="tagline" data-text="Aspiring software developer.">Aspiring software developer.</p>
+          <p class="hero__intro">I'm a student who is still learning. Take a look at what I've built so far.</p>
+          <div class="hero__actions">
+            <a href="#projects" class="btn btn--primary">View my projects</a>
+            <a href="#contact" class="btn btn--ghost">Contact me</a>
+          </div>
+        </div>
+        <img class="hero__photo" src="profile.jpg" alt="Portrait of Judel Omas in a dark suit" width="320" height="400">
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About</h2>
+        <div class="about__grid">
+          <div class="about__bio">
+            <p>Hello, I'm from Nueva Vizcaya, Philippines. I choose this course because i want to learn new skills. I'm still learning new things so there is still nothing that i could proudly share.</p>
+            <h3>Career goals</h3>
+            <p>I want to work as a junior developer, grow my skills in web development, and contribute to projects that help real people.</p>
+          </div>
+          <div class="about__details">
+            <h3>Education</h3>
+            <p><strong>Nueva Vizcaya State University</strong><br>Bachelor of Science in Information Technology<br>Expected graduation: 2028</p>
+            <h3>Interests</h3>
+            <ul class="tag-list">
+              <li>Web development</li>
+              <li>Open source</li>
+              <li>Design</li>
+              <li>Volleyball</li>
+              <li>Chess</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section section--alt">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="skills__grid">
+          <article class="skill-card">
+            <h3>Programming languages</h3>
+            <ul class="tag-list">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+             <li>Python</li>
+            </ul>
+          </article>
+          <article class="skill-card">
+            <h3>Tools and technologies</h3>
+            <ul class="tag-list">
+              <li>Git</li><li>GitHub</li><li>VS Code</li><li>Chrome DevTools</li><li>Notepad++</li>
+            </ul>
+          </article>
+          <article class="skill-card">
+            <h3>Soft skills</h3>
+            <ul class="tag-list">
+              <li>Teamwork</li><li>Communication</li><li>Time management</li><li>Problem solving</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2>Projects</h2>
+        <div class="filter" id="filterBar" aria-label="Filter projects by technology"></div>
+        <div class="projects__grid" id="projectsGrid" aria-live="polite">
+          <p class="status">Loading projects...</p>
+        </div>
+
+        <h3 class="repos__title">Latest GitHub repositories</h3>
+        <ul class="repos" id="reposList" aria-live="polite">
+          <li class="status">Loading repositories...</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section section--alt">
+      <div class="container contact__grid">
+        <div>
+          <h2>Contact</h2>
+          <p>I'm open to internship opportunities. Send me a message or reach out on any of these:</p>
+          <ul class="contact__links">
+            <li><strong>Email:</strong> <a href="mailto:judelgaspar18@gmail.com">judelgaspar18@gmail.com</a></li>
+            <li><strong>GitHub:</strong> <a href="https://github.com/JL18-07" target="_blank" rel="noopener">github.com/JL18-07</a></li>
+            <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/judel-omas" target="_blank" rel="noopener">linkedin.com/in/judel-omas</a></li>
+          </ul>
+        </div>
+
+        <form id="contactForm" class="form" novalidate>
+          <div class="form__field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" autocomplete="name">
+            <span class="form__error" id="nameError"></span>
+          </div>
+          <div class="form__field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email">
+            <span class="form__error" id="emailError"></span>
+          </div>
+          <div class="form__field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5"></textarea>
+            <span class="form__error" id="messageError"></span>
+          </div>
+          <button type="submit" class="btn btn--primary">Send message</button>
+          <p class="form__success" id="formSuccess" role="status" hidden>Thank you! Your message has been received.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Judel Omas. Built with HTML, CSS and JavaScript.</p>
+  </footer>
+
+  <button class="to-top" id="toTop" aria-label="Back to top" hidden>Top</button>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+    
