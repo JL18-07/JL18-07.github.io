@@ -1,15 +1,7 @@
-/* =========================================================
-   Judel Omas | Student Portfolio
-   css/style.css
-   Colors come from the favicon: blue, gold, and neutrals.
-   All colors are defined once as variables below.
-   ========================================================= */
-
-/* ---------- 1. Variables (theme) ---------- */
 :root {
-  --primary: #2f45e0;          /* blue: links, buttons, brand */
+  --primary: #2f45e0;          
   --primary-dark: #2336b8;
-  --accent: #f2b134;           /* gold: highlights only */
+  --accent: #f2b134;           
 
   --bg: #ffffff;
   --bg-alt: #f2f4fb;
@@ -43,7 +35,7 @@
   --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* ---------- 2. Base ---------- */
+
 *,
 *::before,
 *::after {
@@ -156,7 +148,7 @@ a:hover { text-decoration-thickness: 2px; }
   transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
-/* hover effect on links */
+
 .nav__links a:hover {
   color: var(--primary);
   background: var(--bg-alt);
@@ -198,7 +190,7 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--primary);
 }
 
-/* ---------- 4. Buttons ---------- */
+
 .btn {
   display: inline-block;
   font: inherit;
@@ -233,7 +225,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .btn:active { transform: translateY(1px); }
 
-/* ---------- 5. Home / hero (grid) ---------- */
+
 .hero {
   padding-block: clamp(3rem, 8vw, 6rem);
 }
@@ -264,7 +256,7 @@ a:hover { text-decoration-thickness: 2px; }
   min-height: 1.4em; /* keeps layout steady while typing */
 }
 
-/* blinking cursor for the typing effect */
+
 .hero__tagline.is-typing::after {
   content: "";
   display: inline-block;
@@ -298,7 +290,7 @@ a:hover { text-decoration-thickness: 2px; }
   box-shadow: 10px 10px 0 var(--accent), var(--shadow);
 }
 
-/* ---------- 6. About ---------- */
+
 .about__grid {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
@@ -317,8 +309,7 @@ a:hover { text-decoration-thickness: 2px; }
   margin-top: 1.5rem;
 }
 
-/* ---------- 7. Tag lists (skills, interests) ---------- */
-.tag-list {
+
   list-style: none;
   margin: 0;
   padding: 0;
@@ -336,7 +327,7 @@ a:hover { text-decoration-thickness: 2px; }
   background: var(--surface);
 }
 
-/* ---------- 8. Skills (grid: 3 / 2 / 1 columns) ---------- */
+
 .skills__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -355,7 +346,7 @@ a:hover { text-decoration-thickness: 2px; }
   margin-bottom: 1rem;
 }
 
-/* ---------- 9. Projects ---------- */
+
 .filter {
   display: flex;
   flex-wrap: wrap;
@@ -446,7 +437,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-weight: 600;
 }
 
-/* loading / error / empty messages */
+
 .status {
   grid-column: 1 / -1;
   padding: 1rem 1.25rem;
@@ -462,7 +453,7 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--text);
 }
 
-/* GitHub repositories */
+
 .repos__title {
   margin-top: 3.5rem;
 }
@@ -507,7 +498,7 @@ a:hover { text-decoration-thickness: 2px; }
   background: var(--accent);
 }
 
-/* ---------- 10. Contact ---------- */
+
 .contact__grid {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
