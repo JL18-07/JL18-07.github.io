@@ -343,7 +343,7 @@
     success.hidden = false;
   });
 
-  // ---------- 8. Back to top ----------
+  
   var toTop = $("toTop");
 
   function updateToTop() {
