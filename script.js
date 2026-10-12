@@ -8,12 +8,12 @@
     "https://api.github.com/users/" + GITHUB_USERNAME +
     "/repos?sort=updated&per_page=5";
 
-  // ---------- Small helpers ----------
+  
   function $(id) {
     return document.getElementById(id);
   }
 
-  // Create an element with optional class and text (textContent is safe from HTML injection)
+  
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) node.className = className;
@@ -21,7 +21,7 @@
     return node;
   }
 
-  // localStorage can be blocked in some browsers, so wrap it
+  
   function saveSetting(key, value) {
     try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
   }
@@ -29,15 +29,15 @@
     try { return localStorage.getItem(key); } catch (e) { return null; }
   }
 
-  // Only allow http(s) links from the JSON file
+  
   function safeUrl(url) {
     return /^https?:\/\//i.test(url) ? url : "#";
   }
 
-  // ---------- 1. Footer year ----------
+  
   $("year").textContent = new Date().getFullYear();
 
-  // ---------- 2. Mobile menu + active link ----------
+  
   var navToggle = $("navToggle");
   var navLinks = $("navLinks");
 
@@ -52,7 +52,7 @@
     setMenu(!navLinks.classList.contains("is-open"));
   });
 
-  // Close the menu after choosing a link, or pressing Escape
+  
   navLinks.addEventListener("click", function (e) {
     if (e.target.tagName === "A") setMenu(false);
   });
@@ -60,7 +60,7 @@
     if (e.key === "Escape") setMenu(false);
   });
 
-  // Highlight the link of the section currently on screen
+  
   var sectionLinks = navLinks.querySelectorAll('a[href^="#"]');
   if ("IntersectionObserver" in window) {
     var observer = new IntersectionObserver(
@@ -82,14 +82,14 @@
     });
   }
 
-  // ---------- 3. Light / dark theme ----------
+  
   var themeToggle = $("themeToggle");
   var root = document.documentElement;
 
   function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
     var goingDark = theme === "light";
-    // The button names the theme you will switch TO
+    
     themeToggle.textContent = goingDark ? "Dark" : "Light";
     themeToggle.setAttribute(
       "aria-label",
@@ -112,7 +112,7 @@
     saveSetting("theme", next);
   });
 
-  // ---------- 4. Typing effect for the tagline ----------
+  
   var tagline = $("tagline");
   var fullText = tagline.getAttribute("data-text") || tagline.textContent;
   var reduceMotion =
@@ -129,13 +129,13 @@
         tagline.textContent = fullText.slice(0, charIndex);
         setTimeout(typeNext, 70);
       } else {
-        // Stop the blinking cursor shortly after typing finishes
+        
         setTimeout(function () { tagline.classList.remove("is-typing"); }, 1500);
       }
     })();
   }
 
-  // ---------- 5. Projects from JSON + technology filter ----------
+  
   var projectsGrid = $("projectsGrid");
   var filterBar = $("filterBar");
   var allProjects = [];
@@ -150,7 +150,7 @@
   function createProjectCard(project) {
     var card = el("article", "project-card");
 
-    // Screenshot (hidden if the image file is missing)
+    
     if (project.screenshot) {
       var img = el("img", "project-card__img");
       img.src = "images/" + project.screenshot;
@@ -252,7 +252,7 @@
       );
     });
 
-  // ---------- 6. Latest GitHub repositories ----------
+  
   var reposList = $("reposList");
 
   function showReposMessage(text) {
@@ -289,7 +289,7 @@
       );
     });
 
-  // ---------- 7. Contact form ----------
+  
   var form = $("contactForm");
   var success = $("formSuccess");
   var fields = ["name", "email", "message"];
