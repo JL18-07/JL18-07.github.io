@@ -1,10 +1,5 @@
 /* =========================================================
-   Judel Omas | Student Portfolio
-   js/script.js
-   Features:
-   1. Mobile menu + active nav link
-   2. Light / dark theme switch (own feature)
-   3. Typing effect for the tagline (own feature)
+  e)
    4. Projects loaded from data/projects.json
    5. Filter projects by technology (own feature)
    6. Latest GitHub repositories (REST API)
