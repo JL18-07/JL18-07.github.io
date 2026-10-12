@@ -100,7 +100,7 @@ a:hover { text-decoration-thickness: 2px; }
   background: var(--bg-alt);
 }
 
-/* ---------- 3. Navigation (sticky, flexbox) ---------- */
+
 .site-header {
   position: sticky;
   top: 0;
@@ -587,7 +587,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .form__success[hidden] { display: none; }
 
-/* ---------- 11. Footer and back-to-top ---------- */
+
 .footer {
   padding-block: 1.75rem;
   text-align: center;
@@ -619,7 +619,7 @@ a:hover { text-decoration-thickness: 2px; }
 .to-top:hover { background: var(--primary-dark); }
 .to-top[hidden] { display: none; }
 
-/* ---------- 12. Responsive (media queries) ---------- */
+
 
 /* Tablet: 2 columns */
 @media (max-width: 1023px) {
@@ -635,7 +635,7 @@ a:hover { text-decoration-thickness: 2px; }
   }
 }
 
-/* Phone: 1 column, hamburger-style menu */
+
 @media (max-width: 767px) {
   .skills__grid,
   .projects__grid,
@@ -645,7 +645,7 @@ a:hover { text-decoration-thickness: 2px; }
     grid-template-columns: 1fr;
   }
 
-  /* photo above the text on phones */
+  
   .hero__photo {
     order: -1;
     width: min(240px, 70%);
@@ -688,7 +688,6 @@ a:hover { text-decoration-thickness: 2px; }
   }
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
