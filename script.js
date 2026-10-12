@@ -1,16 +1,7 @@
-/* =========================================================
-  e)
-   4. Projects loaded from data/projects.json
-   5. Filter projects by technology (own feature)
-   6. Latest GitHub repositories (REST API)
-   7. Contact form validation
-   8. Back-to-top button (own feature)
-   ========================================================= */
-
 (function () {
   "use strict";
 
-  // ---------- Settings ----------
+  
   var GITHUB_USERNAME = "JL18-07";
   var PROJECTS_URL = "data/projects.json";
   var REPOS_URL =
