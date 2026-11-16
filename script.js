@@ -1,103 +1,111 @@
 (function () {
   "use strict";
 
-  
-  var GITHUB_USERNAME = "JL18-07";
-  var PROJECTS_URL = "projects.json";
-  var REPOS_URL =
-    "https://api.github.com/users/" + GITHUB_USERNAME +
-    "/repos?sort=updated&per_page=5";
+  const GITHUB_USERNAME = "JL18-07";
+  const PROJECTS_URL = "projects.json";
+  const REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=5`;
 
-  
-  function $(id) {
-    return document.getElementById(id);
-  }
+  const $ = (id) => document.getElementById(id);
 
-  
-  function el(tag, className, text) {
-    var node = document.createElement(tag);
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
     if (className) node.className = className;
     if (text !== undefined) node.textContent = text;
     return node;
+  };
+
+  const saveSetting = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {
+      // ignore storage issues in private browsing or restricted environments
+    }
+  };
+
+  const loadSetting = (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const safeUrl = (url) => (/^https?:\/\//i.test(url) ? url : "#");
+
+  const year = $("year");
+  if (year) {
+    year.textContent = new Date().getFullYear();
   }
 
-  
-  function saveSetting(key, value) {
-    try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
-  }
-  function loadSetting(key) {
-    try { return localStorage.getItem(key); } catch (e) { return null; }
-  }
+  const navToggle = $("navToggle");
+  const navLinks = $("navLinks");
 
-  
-  function safeUrl(url) {
-    return /^https?:\/\//i.test(url) ? url : "#";
-  }
+  const setMenu = (isOpen) => {
+    if (!navLinks || !navToggle) return;
 
-  
-  $("year").textContent = new Date().getFullYear();
+    navLinks.classList.toggle("is-open", isOpen);
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    navToggle.textContent = isOpen ? "Close" : "Menu";
+  };
 
-  
-  var navToggle = $("navToggle");
-  var navLinks = $("navLinks");
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      setMenu(!navLinks.classList.contains("is-open"));
+    });
 
-  function setMenu(open) {
-    navLinks.classList.toggle("is-open", open);
-    navToggle.setAttribute("aria-expanded", String(open));
-    navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    navToggle.textContent = open ? "Close" : "Menu";
+    navLinks.addEventListener("click", (event) => {
+      if (event.target.tagName === "A") {
+        setMenu(false);
+      }
+    });
   }
 
-  navToggle.addEventListener("click", function () {
-    setMenu(!navLinks.classList.contains("is-open"));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setMenu(false);
+    }
   });
 
-  
-  navLinks.addEventListener("click", function (e) {
-    if (e.target.tagName === "A") setMenu(false);
-  });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") setMenu(false);
-  });
+  const sectionLinks = navLinks ? navLinks.querySelectorAll('a[href^="#"]') : [];
 
-  
-  var sectionLinks = navLinks.querySelectorAll('a[href^="#"]');
   if ("IntersectionObserver" in window) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          sectionLinks.forEach(function (link) {
-            link.classList.toggle(
-              "is-active",
-              link.getAttribute("href") === "#" + entry.target.id
-            );
+
+          sectionLinks.forEach((link) => {
+            const isActive = link.getAttribute("href") === `#${entry.target.id}`;
+            link.classList.toggle("is-active", isActive);
           });
         });
       },
       { rootMargin: "-45% 0px -50% 0px" }
     );
-    document.querySelectorAll("main section[id]").forEach(function (section) {
+
+    document.querySelectorAll("main section[id]").forEach((section) => {
       observer.observe(section);
     });
   }
 
-  
-  var themeToggle = $("themeToggle");
-  var root = document.documentElement;
+  const themeToggle = $("themeToggle");
+  const root = document.documentElement;
 
-  function applyTheme(theme) {
+  const applyTheme = (theme) => {
     root.setAttribute("data-theme", theme);
-    var goingDark = theme === "light";
-    
-    themeToggle.textContent = goingDark ? "Dark" : "Light";
-    themeToggle.setAttribute(
-      "aria-label",
-      goingDark ? "Switch to dark theme" : "Switch to light theme"
-    );
-  }
+    const isLight = theme === "light";
 
-  var savedTheme = loadSetting("theme");
+    if (themeToggle) {
+      themeToggle.textContent = isLight ? "Dark" : "Light";
+      themeToggle.setAttribute(
+        "aria-label",
+        isLight ? "Switch to dark theme" : "Switch to light theme"
+      );
+    }
+  };
+
+  let savedTheme = loadSetting("theme");
   if (savedTheme !== "light" && savedTheme !== "dark") {
     savedTheme =
       window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -106,253 +114,328 @@
   }
   applyTheme(savedTheme);
 
-  themeToggle.addEventListener("click", function () {
-    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    applyTheme(next);
-    saveSetting("theme", next);
-  });
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(nextTheme);
+      saveSetting("theme", nextTheme);
+    });
+  }
 
-  
-  var tagline = $("tagline");
-  var fullText = tagline.getAttribute("data-text") || tagline.textContent;
-  var reduceMotion =
+  const tagline = $("tagline");
+  const reduceMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (!reduceMotion) {
-    var charIndex = 0;
-    tagline.textContent = "";
-    tagline.classList.add("is-typing");
+  if (tagline) {
+    const fullText = tagline.getAttribute("data-text") || tagline.textContent;
 
-    (function typeNext() {
-      if (charIndex < fullText.length) {
-        charIndex += 1;
-        tagline.textContent = fullText.slice(0, charIndex);
-        setTimeout(typeNext, 70);
-      } else {
-        
-        setTimeout(function () { tagline.classList.remove("is-typing"); }, 1500);
-      }
-    })();
+    if (!reduceMotion) {
+      let charIndex = 0;
+      tagline.textContent = "";
+      tagline.classList.add("is-typing");
+
+      const typeNext = () => {
+        if (charIndex < fullText.length) {
+          charIndex += 1;
+          tagline.textContent = fullText.slice(0, charIndex);
+          setTimeout(typeNext, 70);
+        } else {
+          setTimeout(() => {
+            tagline.classList.remove("is-typing");
+          }, 1500);
+        }
+      };
+
+      typeNext();
+    }
   }
 
-  
-  var projectsGrid = $("projectsGrid");
-  var filterBar = $("filterBar");
-  var allProjects = [];
-  var activeFilter = "All";
+  const projectsGrid = $("projectsGrid");
+  const filterBar = $("filterBar");
+  let allProjects = [];
+  let activeFilter = "All";
 
-  function showProjectsMessage(text) {
+  const showProjectsMessage = (text) => {
+    if (!projectsGrid) return;
+
     projectsGrid.innerHTML = "";
     projectsGrid.appendChild(el("p", "status status--error", text));
-    filterBar.innerHTML = "";
-  }
 
-  function createProjectCard(project) {
-    var card = el("article", "project-card");
+    if (filterBar) {
+      filterBar.innerHTML = "";
+    }
+  };
 
-    
+  const createProjectCard = (project) => {
+    const card = el("article", "project-card");
+
     if (project.screenshot) {
-      var img = el("img", "project-card__img");
-      img.src = "images/" + project.screenshot;
-      img.alt = "Screenshot of " + project.title;
+      const img = el("img", "project-card__img");
+      img.src = `images/${project.screenshot}`;
+      img.alt = `Screenshot of ${project.title}`;
       img.loading = "lazy";
-      img.addEventListener("error", function () { img.remove(); });
+      img.addEventListener("error", () => {
+        img.remove();
+      });
       card.appendChild(img);
     }
 
-    var body = el("div", "project-card__body");
+    const body = el("div", "project-card__body");
     body.appendChild(el("h3", "", project.title));
     body.appendChild(el("p", "", project.description));
 
-    var techList = el("ul", "tag-list");
-    (project.technologies || []).forEach(function (tech) {
+    const techList = el("ul", "tag-list");
+    (project.technologies || []).forEach((tech) => {
       techList.appendChild(el("li", "", tech));
     });
     body.appendChild(techList);
 
-    var role = el("p", "project-card__role");
+    const role = el("p", "project-card__role");
     role.appendChild(el("strong", "", "My role: "));
     role.appendChild(document.createTextNode(project.role || ""));
     body.appendChild(role);
 
-    var link = el("a", "project-card__link", "View on GitHub");
+    const link = el("a", "project-card__link", "View on GitHub");
     link.href = safeUrl(project.link);
     link.target = "_blank";
-    link.rel = "noopener";
+    link.rel = "noopener noreferrer";
     body.appendChild(link);
 
     card.appendChild(body);
     return card;
-  }
+  };
 
-  function renderProjects() {
+  const renderProjects = () => {
+    if (!projectsGrid) return;
+
     projectsGrid.innerHTML = "";
-    var visible = allProjects.filter(function (p) {
-      return activeFilter === "All" || (p.technologies || []).indexOf(activeFilter) !== -1;
+
+    const visible = allProjects.filter((project) => {
+      const technologies = project.technologies || [];
+      return activeFilter === "All" || technologies.includes(activeFilter);
     });
 
     if (visible.length === 0) {
-      projectsGrid.appendChild(el("p", "status", "No projects use " + activeFilter + " yet."));
+      projectsGrid.appendChild(
+        el("p", "status", `No projects use ${activeFilter} yet.`)
+      );
       return;
     }
-    visible.forEach(function (project) {
+
+    visible.forEach((project) => {
       projectsGrid.appendChild(createProjectCard(project));
     });
-  }
+  };
 
-  function renderFilters() {
-    var techs = [];
-    allProjects.forEach(function (p) {
-      (p.technologies || []).forEach(function (t) {
-        if (techs.indexOf(t) === -1) techs.push(t);
-      });
-    });
+  const renderFilters = () => {
+    if (!filterBar) return;
+
+    const techs = [...new Set(allProjects.flatMap((project) => project.technologies || []))];
     techs.sort();
     techs.unshift("All");
 
     filterBar.innerHTML = "";
-    techs.forEach(function (tech) {
-      var btn = el("button", "filter__btn", tech);
+
+    techs.forEach((tech) => {
+      const btn = el("button", "filter__btn", tech);
       btn.type = "button";
       btn.setAttribute("aria-pressed", String(tech === activeFilter));
-      if (tech === activeFilter) btn.classList.add("is-active");
+
+      if (tech === activeFilter) {
+        btn.classList.add("is-active");
+      }
+
       filterBar.appendChild(btn);
     });
+  };
+
+  if (filterBar) {
+    filterBar.addEventListener("click", (event) => {
+      const btn = event.target.closest(".filter__btn");
+      if (!btn) return;
+
+      activeFilter = btn.textContent;
+
+      filterBar.querySelectorAll(".filter__btn").forEach((button) => {
+        const isActive = button === btn;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+
+      renderProjects();
+    });
   }
 
-  filterBar.addEventListener("click", function (e) {
-    var btn = e.target.closest(".filter__btn");
-    if (!btn) return;
-    activeFilter = btn.textContent;
-    filterBar.querySelectorAll(".filter__btn").forEach(function (b) {
-      var isActive = b === btn;
-      b.classList.toggle("is-active", isActive);
-      b.setAttribute("aria-pressed", String(isActive));
-    });
-    renderProjects();
-  });
+  if (projectsGrid) {
+    fetch(PROJECTS_URL)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        allProjects = Array.isArray(data) ? data : data.projects;
 
-  fetch(PROJECTS_URL)
-    .then(function (response) {
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      return response.json();
-    })
-    .then(function (data) {
-      allProjects = Array.isArray(data) ? data : data.projects;
-      if (!Array.isArray(allProjects) || allProjects.length === 0) {
-        throw new Error("No projects in file");
-      }
-      renderFilters();
-      renderProjects();
-    })
-    .catch(function (error) {
-      console.warn("Projects could not be loaded:", error.message);
-      showProjectsMessage(
-        "Projects could not be loaded right now. Please refresh the page or try again later."
-      );
-    });
+        if (!Array.isArray(allProjects) || allProjects.length === 0) {
+          throw new Error("No projects in file");
+        }
 
-  
-  var reposList = $("reposList");
+        renderFilters();
+        renderProjects();
+      })
+      .catch((error) => {
+        console.warn("Projects could not be loaded:", error.message);
+        showProjectsMessage(
+          "Projects could not be loaded right now. Please refresh the page or try again later."
+        );
+      });
+  }
 
-  function showReposMessage(text) {
+  const reposList = $("reposList");
+
+  const showReposMessage = (text) => {
+    if (!reposList) return;
+
     reposList.innerHTML = "";
     reposList.appendChild(el("li", "status status--error", text));
-  }
+  };
 
-  fetch(REPOS_URL, { headers: { Accept: "application/vnd.github+json" } })
-    .then(function (response) {
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      return response.json();
+  if (reposList) {
+    fetch(REPOS_URL, {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
     })
-    .then(function (repos) {
-      reposList.innerHTML = "";
-      if (!Array.isArray(repos) || repos.length === 0) {
-        reposList.appendChild(el("li", "status", "No public repositories to show yet."));
-        return;
-      }
-      repos.forEach(function (repo) {
-        var item = el("li");
-        var link = el("a", "", repo.name);
-        link.href = safeUrl(repo.html_url);
-        link.target = "_blank";
-        link.rel = "noopener";
-        item.appendChild(link);
-        item.appendChild(el("span", "repo__lang", repo.language || "No language detected"));
-        reposList.appendChild(item);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((repos) => {
+        reposList.innerHTML = "";
+
+        if (!Array.isArray(repos) || repos.length === 0) {
+          reposList.appendChild(
+            el("li", "status", "No public repositories to show yet.")
+          );
+          return;
+        }
+
+        repos.forEach((repo) => {
+          const item = el("li");
+          const link = el("a", "", repo.name);
+          link.href = safeUrl(repo.html_url);
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+
+          item.appendChild(link);
+          item.appendChild(
+            el("span", "repo__lang", repo.language || "No language detected")
+          );
+
+          reposList.appendChild(item);
+        });
+      })
+      .catch((error) => {
+        console.warn("GitHub data unavailable:", error.message);
+        showReposMessage(
+          "GitHub data is unavailable right now. The request limit may have been reached; try again later."
+        );
       });
-    })
-    .catch(function (error) {
-      console.warn("GitHub data unavailable:", error.message);
-      showReposMessage(
-        "GitHub data is unavailable right now. The request limit may have been reached; try again later."
-      );
-    });
-
-  
-  var form = $("contactForm");
-  var success = $("formSuccess");
-  var fields = ["name", "email", "message"];
-
-  function setError(id, text) {
-    $(id + "Error").textContent = text;
-    $(id).closest(".form__field").classList.toggle("has-error", text !== "");
-    $(id).setAttribute("aria-invalid", text !== "" ? "true" : "false");
   }
 
-  function validateField(id) {
-    var value = $(id).value.trim();
-    var error = "";
+  const form = $("contactForm");
+  const successMessage = $("formSuccess");
+  const formFields = ["name", "email", "message"];
+
+  const setError = (fieldId, text) => {
+    const field = $(fieldId);
+    const errorNode = $(fieldId + "Error");
+
+    if (!field || !errorNode) return;
+
+    errorNode.textContent = text;
+    field.closest(".form__field").classList.toggle("has-error", text !== "");
+    field.setAttribute("aria-invalid", text !== "" ? "true" : "false");
+  };
+
+  const validateField = (fieldId) => {
+    const field = $(fieldId);
+    if (!field) return true;
+
+    const value = field.value.trim();
+    let error = "";
 
     if (value === "") {
-      error = "Please enter your " + id + ".";
-    } else if (id === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      error = `Please enter your ${fieldId}.`;
+    } else if (fieldId === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
       error = "Enter a valid email address, like name@example.com.";
     }
-    setError(id, error);
+
+    setError(fieldId, error);
     return error === "";
-  }
+  };
 
-  // Re-check a field as the user fixes it
-  fields.forEach(function (id) {
-    $(id).addEventListener("input", function () {
-      if ($(id + "Error").textContent !== "") validateField(id);
-      success.hidden = true;
+  if (form) {
+    formFields.forEach((fieldId) => {
+      const field = $(fieldId);
+      if (!field) return;
+
+      field.addEventListener("input", () => {
+        if ($(fieldId + "Error").textContent !== "") {
+          validateField(fieldId);
+        }
+
+        if (successMessage) {
+          successMessage.hidden = true;
+        }
+      });
     });
-  });
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    success.hidden = true;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-    // Validate every field (no short-circuit so all errors show)
-    var allValid = fields.map(validateField).every(Boolean);
+      if (successMessage) {
+        successMessage.hidden = true;
+      }
 
-    if (!allValid) {
-      // Move focus to the first field with an error
-      var firstBad = fields.filter(function (id) {
-        return $(id + "Error").textContent !== "";
-      })[0];
-      $(firstBad).focus();
-      return;
-    }
+      const allValid = formFields.map(validateField).every(Boolean);
 
-    // The site has no back end, so the message is not sent anywhere.
-    form.reset();
-    fields.forEach(function (id) { setError(id, ""); });
-    success.hidden = false;
-  });
+      if (!allValid) {
+        const firstBadField = formFields.find((fieldId) => $(fieldId + "Error").textContent !== "");
+        if (firstBadField) {
+          $(firstBadField).focus();
+        }
+        return;
+      }
 
-  
-  var toTop = $("toTop");
+      form.reset();
+      formFields.forEach((fieldId) => setError(fieldId, ""));
 
-  function updateToTop() {
-    toTop.hidden = window.scrollY < 400;
+      if (successMessage) {
+        successMessage.hidden = false;
+      }
+    });
   }
-  window.addEventListener("scroll", updateToTop, { passive: true });
-  updateToTop();
 
-  toTop.addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-  });
+  const toTop = $("toTop");
+
+  const updateToTop = () => {
+    if (!toTop) return;
+    toTop.hidden = window.scrollY < 400;
+  };
+
+  if (toTop) {
+    window.addEventListener("scroll", updateToTop, { passive: true });
+    updateToTop();
+
+    toTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    });
+  }
 })();
