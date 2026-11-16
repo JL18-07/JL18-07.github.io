@@ -1,10 +1,12 @@
 (function () {
   "use strict";
 
+  // Settings used to load project data and the account's latest public repositories.
   const GITHUB_USERNAME = "JL18-07";
   const PROJECTS_URL = "projects.json";
   const REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=5`;
 
+  // Shortcuts for finding elements by ID and creating safe text-based DOM elements.
   const $ = (id) => document.getElementById(id);
 
   const el = (tag, className, text) => {
@@ -14,11 +16,12 @@
     return node;
   };
 
+  // Save and load visitor preferences without breaking the page if storage is unavailable.
   const saveSetting = (key, value) => {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
-      // ignore storage issues in private browsing or restricted environments
+      // Ignore storage issues in private browsing or restricted environments.
     }
   };
 
@@ -30,13 +33,16 @@
     }
   };
 
+  // Only allow HTTP(S) links; use a harmless placeholder for anything else.
   const safeUrl = (url) => (/^https?:\/\//i.test(url) ? url : "#");
 
+  // Update the footer's year to the current year automatically.
   const year = $("year");
   if (year) {
     year.textContent = new Date().getFullYear();
   }
 
+  // Mobile navigation: open/close the menu and keep its accessibility state in sync.
   const navToggle = $("navToggle");
   const navLinks = $("navLinks");
 
@@ -54,6 +60,7 @@
       setMenu(!navLinks.classList.contains("is-open"));
     });
 
+    // Close the mobile menu after a visitor chooses a navigation link.
     navLinks.addEventListener("click", (event) => {
       if (event.target.tagName === "A") {
         setMenu(false);
@@ -61,12 +68,14 @@
     });
   }
 
+  // Escape closes the mobile menu, if it is open.
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       setMenu(false);
     }
   });
 
+  // Highlight the navigation link for the section currently in view.
   const sectionLinks = navLinks ? navLinks.querySelectorAll('a[href^="#"]') : [];
 
   if ("IntersectionObserver" in window) {
@@ -89,6 +98,7 @@
     });
   }
 
+  // Apply the saved color theme, or use the visitor's device preference on first visit.
   const themeToggle = $("themeToggle");
   const root = document.documentElement;
 
@@ -114,6 +124,7 @@
   }
   applyTheme(savedTheme);
 
+  // Let visitors switch themes and remember their choice for the next visit.
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
       const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
@@ -122,6 +133,7 @@
     });
   }
 
+  // Animate the tagline one character at a time unless reduced motion is requested.
   const tagline = $("tagline");
   const reduceMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -150,11 +162,13 @@
     }
   }
 
+  // Project data and the controls that filter the displayed project cards.
   const projectsGrid = $("projectsGrid");
   const filterBar = $("filterBar");
   let allProjects = [];
   let activeFilter = "All";
 
+  // Replace the project area with an error message if the project file cannot load.
   const showProjectsMessage = (text) => {
     if (!projectsGrid) return;
 
@@ -166,6 +180,7 @@
     }
   };
 
+  // Build one project card, including its image, description, technology tags, role, and link.
   const createProjectCard = (project) => {
     const card = el("article", "project-card");
 
@@ -205,6 +220,7 @@
     return card;
   };
 
+  // Redraw the project grid to show only projects matching the selected technology filter.
   const renderProjects = () => {
     if (!projectsGrid) return;
 
@@ -227,6 +243,7 @@
     });
   };
 
+  // Create one filter button for each unique technology listed in the project data.
   const renderFilters = () => {
     if (!filterBar) return;
 
@@ -249,6 +266,7 @@
     });
   };
 
+  // When a technology filter is clicked, update its selected state and redraw the cards.
   if (filterBar) {
     filterBar.addEventListener("click", (event) => {
       const btn = event.target.closest(".filter__btn");
@@ -266,6 +284,7 @@
     });
   }
 
+  // Fetch project information from projects.json, then create filters and project cards.
   if (projectsGrid) {
     fetch(PROJECTS_URL)
       .then((response) => {
@@ -292,8 +311,10 @@
       });
   }
 
+  // Display the latest public repositories in the repositories section.
   const reposList = $("reposList");
 
+  // Show a helpful message in the repository list if GitHub's API request fails.
   const showReposMessage = (text) => {
     if (!reposList) return;
 
@@ -346,10 +367,12 @@
       });
   }
 
+  // Contact form validation and feedback shown beside the form fields.
   const form = $("contactForm");
   const successMessage = $("formSuccess");
   const formFields = ["name", "email", "message"];
 
+  // Set a field's error text and update its visual and screen-reader error state.
   const setError = (fieldId, text) => {
     const field = $(fieldId);
     const errorNode = $(fieldId + "Error");
@@ -361,6 +384,7 @@
     field.setAttribute("aria-invalid", text !== "" ? "true" : "false");
   };
 
+  // Check that a field is filled in and, for email, has a valid-looking address.
   const validateField = (fieldId) => {
     const field = $(fieldId);
     if (!field) return true;
@@ -379,6 +403,7 @@
   };
 
   if (form) {
+    // Re-check fields with existing errors while the visitor edits them; hide old success feedback.
     formFields.forEach((fieldId) => {
       const field = $(fieldId);
       if (!field) return;
@@ -394,6 +419,7 @@
       });
     });
 
+    // Validate all fields on submit, focus the first invalid field, or show success feedback.
     form.addEventListener("submit", (event) => {
       event.preventDefault();
 
@@ -420,6 +446,7 @@
     });
   }
 
+  // Show the back-to-top button after scrolling down and return smoothly to the page top.
   const toTop = $("toTop");
 
   const updateToTop = () => {
