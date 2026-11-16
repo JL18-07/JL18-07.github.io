@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  
   const GITHUB_USERNAME = "JL18-07";
   const PROJECTS_URL = "projects.json";
   const REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=5`;
