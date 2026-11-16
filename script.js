@@ -4,7 +4,7 @@
   // Settings used to load project data and the account's latest public repositories.
   const GITHUB_USERNAME = "JL18-07";
   const PROJECTS_URL = "projects.json";
-  const REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=5`;
+  const REPOS_URL = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`;
 
   // Shortcuts for finding elements by ID and creating safe text-based DOM elements.
   const $ = (id) => document.getElementById(id);
