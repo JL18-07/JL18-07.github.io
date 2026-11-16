@@ -186,7 +186,8 @@
 
     if (project.screenshot) {
       const img = el("img", "project-card__img");
-      img.src = `images/${project.screenshot}`;
+      // Screenshot paths are provided by projects.json (including root-level photos).
+      img.src = project.screenshot;
       img.alt = `Screenshot of ${project.title}`;
       img.loading = "lazy";
       img.addEventListener("error", () => {
