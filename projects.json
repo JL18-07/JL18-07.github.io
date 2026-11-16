@@ -4,7 +4,7 @@
     "description": "A website about me, my skills, and my projects.",
     "technologies": ["HTML", "CSS", "JavaScript"],
     "role": "Built by me",
-    "screenshot": "portfolio.svg",
+    "screenshot": "portfolio.jpg",
     "link": "https://github.com/JL18-07/JL18-07.github.io",
     "linkLabel": "View on GitHub"
   },
@@ -13,7 +13,7 @@
     "description": "An app that helps students keep track of deadlines.",
     "technologies": ["HTML", "CSS", "JavaScript"],
     "role": "Built by me",
-    "screenshot": "portfolio.svg",
+    "screenshot": "next-step.jpg",
     "link": "https://github.com/JL18-07/Next-Step-deadline-tracker-.github.io",
     "linkLabel": "View on GitHub"
   }
